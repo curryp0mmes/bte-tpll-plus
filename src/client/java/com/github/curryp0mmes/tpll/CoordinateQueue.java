@@ -40,7 +40,7 @@ public class CoordinateQueue extends Thread {
             }
             //if it still doesn't change ABORT
             if (player.getBlockPos().equals(oldPos)) {
-                mc.inGameHud.setOverlayMessage(Text.of("§4AutoTPLL failed"), false);
+                BtetpllplusClient.printStatusBar("§4AutoTPLL failed");
                 return;
             }
 
@@ -49,7 +49,7 @@ public class CoordinateQueue extends Thread {
             sleep(500);
 
         } catch (Exception ignored) {
-            mc.inGameHud.setOverlayMessage(Text.of("§4AutoTPLL failed"), false);
+            BtetpllplusClient.printStatusBar("§4AutoTPLL failed");
         }
     }
 }

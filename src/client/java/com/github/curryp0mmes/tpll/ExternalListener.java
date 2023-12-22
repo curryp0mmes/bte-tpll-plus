@@ -9,6 +9,7 @@ import net.minecraft.text.Text;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 
 public class ExternalListener {
     HttpServer server;
@@ -48,10 +49,11 @@ public class ExternalListener {
 
         private boolean handleGetRequest(HttpExchange httpExchange) {
             String request = httpExchange.getRequestURI().toString().substring(1);
-            //request contains the full string after /
-            System.out.println("New request via WEBSERVER: " + request);
-
             try {
+                request = java.net.URLDecoder.decode(request, StandardCharsets.UTF_8);
+                //request contains the full string after /
+                System.out.println("New request via WEBSERVER: " + request);
+
                 if(!ModConfigs.AUTOTPLLACTIVATED) return true;
 
 
@@ -63,7 +65,7 @@ public class ExternalListener {
 
                 BtetpllplusClient.tpllqueue.add(clipboardContent);
 
-                MinecraftClient.getInstance().inGameHud.setOverlayMessage(Text.of("§6Added Coordinates To Queue"), false);
+                BtetpllplusClient.printStatusBar("§6Added Coordinates To Queue");
                 if(!BtetpllplusClient.tpllThread.isAlive()) {
                     BtetpllplusClient.tpllThread = new CoordinateQueue();
                     BtetpllplusClient.tpllThread.start();

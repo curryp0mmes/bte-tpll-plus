@@ -4,6 +4,7 @@ import com.github.curryp0mmes.tpll.config.ModConfigs;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
@@ -27,8 +28,6 @@ public class BtetpllplusClient implements ClientModInitializer {
 		ModConfigs.registerConfigs();
 
 		externalListener = new ExternalListener();
-		ClipBoardListener cbl = new ClipBoardListener();
-		cbl.start();
 
 		toggleTpllKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.btetpllplus.toggle", // The translation key of the keybinding's name
@@ -44,9 +43,10 @@ public class BtetpllplusClient implements ClientModInitializer {
 				client.inGameHud.setOverlayMessage(Text.of("AutoTpll = " + (ModConfigs.AUTOTPLLACTIVATED ? "ON" : "OFF")), false);
 			}
 		});
-		//ModInputHandler.registerKeyBinds();
-		//MinecraftForge.EVENT_BUS.register(new ModInputHandler());
+	}
 
-		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+	public static void printStatusBar(String text) {
+		MinecraftClient mc = MinecraftClient.getInstance();
+		mc.inGameHud.setOverlayMessage(Text.of(text), false);
 	}
 }

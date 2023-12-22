@@ -1,6 +1,7 @@
 import tkinter as tk
 import re
 import urllib.request
+import urllib.parse
 
 root = tk.Tk()
 enabled = tk.IntVar()
@@ -14,6 +15,7 @@ def send_clipboard(cbcontent):
     if not pattern2.match(cbcontent):
         return
 
+    cbcontent = urllib.parse.quote(cbcontent)
     urllib.request.urlopen("http://localhost:7780/" + cbcontent)
 
 
