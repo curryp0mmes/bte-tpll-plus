@@ -19,15 +19,14 @@ public class BtetpllplusClient implements ClientModInitializer {
 	public static ArrayList<String> tpllqueue = new ArrayList<>();
 
 	private static KeyBinding toggleTpllKeybinding;
-	public static Clipboard sysClip;
+
+	ExternalListener externalListener;
 
 	@Override
 	public void onInitializeClient() {
 		ModConfigs.registerConfigs();
 
-		//TODO Fix Headless Exception when ran in regular MC
-		System.setProperty("java.awt.headless", "false");
-		sysClip = Toolkit.getDefaultToolkit().getSystemClipboard();
+		externalListener = new ExternalListener();
 		ClipBoardListener cbl = new ClipBoardListener();
 		cbl.start();
 

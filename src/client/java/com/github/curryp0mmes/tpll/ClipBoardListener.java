@@ -18,9 +18,11 @@ import java.util.logging.Logger;
 
 public class ClipBoardListener extends Thread implements ClipboardOwner {
 
-    Clipboard sysClip = BtetpllplusClient.sysClip;
+    Clipboard sysClip;
     @Override
     public void run() {
+        System.setProperty("java.awt.headless", "false");
+        sysClip = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable trans = sysClip.getContents(this);
         TakeOwnership(trans);
 
@@ -52,27 +54,7 @@ public class ClipBoardListener extends Thread implements ClipboardOwner {
     public void process_clipboard(Transferable t, Clipboard c) { //your implementation
         String clipboardContent;
 
-        try {
-            if(!ModConfigs.AUTOTPLLACTIVATED) return;
 
-            if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                clipboardContent = (String) t.getTransferData(DataFlavor.stringFlavor);
-
-                //check if string contains numbers, so we only run if we actually got coordinates
-                if(!clipboardContent.matches(".*\\d.*")) return;
-                if(!clipboardContent.matches("\\s*[0-9]*\\.[0-9]+.*[0-9]*\\.[0-9]+.*")) return;
-
-                BtetpllplusClient.tpllqueue.add(clipboardContent);
-
-                MinecraftClient.getInstance().inGameHud.setOverlayMessage(Text.of("§6Added Coordinates To Queue"), false);
-                if(!BtetpllplusClient.tpllThread.isAlive()) {
-                    BtetpllplusClient.tpllThread = new CoordinateQueue();
-                    BtetpllplusClient.tpllThread.start();
-                }
-            }
-
-        } catch (Exception ignored) {
-        }
     }
 
 }
